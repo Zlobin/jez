@@ -1,0 +1,20 @@
+{
+  "name": "zlobin/jez",
+  "description": "JEZ",
+  "version": "0.1.0",
+  "keywords": ["jez"],
+  "homepage": "https://github.com/Zlobin/jez",
+  "type": "library",
+  "license": "MIT",
+  "authors": [
+    {
+      "name": "Eugene Zlobin",
+      "email": "creastar@gmail.com",
+      "homepage": "http://zlobin.pro/zlobin_eng.html",
+      "role": "Developer"    
+    }
+  ],
+  "support": {
+    "issues": "https://github.com/Zlobin/jez/issues"
+  }
+}
