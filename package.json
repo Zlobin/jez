@@ -25,18 +25,15 @@
     "grunt-replace": "~0.6.*",
     "grunt-contrib-copy": "*",
     "grunt-line-remover": "0.0.2",
-    "grunt-contrib-concat": "~0.3.0",
     "grunt-contrib-jshint": "latest",
     "grunt-contrib-connect": "~0.3.0",
     "grunt-contrib-clean": "~0.5.0",
     "grunt-remove-logging": "latest",
     "grunt-contrib-uglify": "latest",
     "grunt-closure-compiler": "latest",
-    "grunt-contrib-watch": "latest",
     "grunt-rev": "~0.1.0",
     "grunt-open": "~0.2.0",
     "load-grunt-tasks": "latest",
-    "connect-livereload": "~0.2.0",
     "time-grunt": "~0.1.1"
   },
   "engines": {
