@@ -15,7 +15,7 @@ var JEZ = JEZ || {},
   /**
    * JEZ
    *
-   * @version 0.1.1
+   * @version 0.1.2
    */
   JEZ = {
     'keys': {
@@ -44,10 +44,14 @@ var JEZ = JEZ || {},
         return undef;
       };
 
-      F.prototype = Parent.prototype;
-      Child.prototype = new F();
-      Child.prototype.constructor = Child;
-      Child.super_ = Parent.prototype;
+      if (!win.Object.create) {
+        F.prototype = Parent.prototype;
+        Child.prototype = new F();
+        Child.prototype.constructor = Child;
+        Child.super_ = Parent.prototype;
+      } else {
+        Child.prototype = win.Object.create(Parent.prototype);
+      }
     },
     'extend': function(obj, ext_obj) {
       var counter = arguments.length,
