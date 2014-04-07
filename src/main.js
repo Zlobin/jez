@@ -15,7 +15,7 @@ var JEZ = JEZ || {},
   /**
    * JEZ
    *
-   * @version 0.1.0
+   * @version 0.1.1
    */
   JEZ = {
     'keys': {
@@ -67,6 +67,9 @@ var JEZ = JEZ || {},
       }
 
       return obj;
+    },
+    'nail': function() {
+      return undef;
     },
     'dom': function(el, parent) {
       el = el || null;
@@ -270,6 +273,15 @@ var JEZ = JEZ || {},
                 } else {
                   elem.className = elem.className.replace(new RegExp('(\\s|^)' + class_name + '(\\s|$)'), ' ');
                 }
+              }
+
+              return this;
+            },
+            'toggleClass':  function(class_name) {
+              if (this.hasClass(class_name)) {
+                this.removeClass(class_name);
+              } else {
+                this.addClass(class_name);
               }
 
               return this;
