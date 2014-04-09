@@ -1,4 +1,4 @@
-тфшд/* jslint nomen: true, plusplus: true, white: true, indent: 2, maxlen: 120 */
+/* jslint nomen: true, plusplus: true, white: true, indent: 2, maxlen: 120 */
 
 /**
  * Base namespace for JEZ.
