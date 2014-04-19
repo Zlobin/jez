@@ -1,23 +1,14 @@
 /* jslint nomen: true, plusplus: true, white: true, indent: 2, maxlen: 120 */
 
 /**
- * Base namespace for JEZ.
+ * JEZ
+ *
+ * @version 0.1.3
  */
-var JEZ = JEZ || {},
-    JEZ_locale = [];
-
-(function(win, undef) {
+var JEZ = (function(win, doc, JEZ_locale, undef) {
   'use strict';
 
-  var doc = win.document,
-      JEZ_locale = win.JEZ_locale;
-
-  /**
-   * JEZ
-   *
-   * @version 0.1.2
-   */
-  JEZ = {
+  return {
     'keys': {
       'ENTER': 13,
       'ESCAPE': 27,
@@ -97,9 +88,12 @@ var JEZ = JEZ || {},
               }
 
               if (elem !== null) {
-                elem.addEventListener ?
-                    elem.addEventListener(type, func, false) :
-                    elem.attachEvent('on' + type, func); // IE
+                if (elem.addEventListener) {
+                  elem.addEventListener(type, func, false);
+                } else {
+                   // IE
+                   elem.attachEvent('on' + type, func);
+                }
               }
 
               return this;
@@ -109,9 +103,12 @@ var JEZ = JEZ || {},
               var elem = this.el;
 
               if (elem !== null) {
-                elem.removeEventListener ?
-                    elem.removeEventListener(type, handler, false) :
-                    elem.detachEvent('on' + type, handler); // IE
+                if (elem.removeEventListener) {
+                  elem.removeEventListener(type, handler, false);
+                } else {
+                  // IE
+                  elem.detachEvent('on' + type, handler);
+                }
               }
 
               return this;
@@ -120,7 +117,8 @@ var JEZ = JEZ || {},
             'trigger': function(event_name, args) {
               var evt,
                   elem = this.el,
-                  par = this.parent;
+                  par = this.parent,
+                  returned_data;
 
               if (par.createEvent) {
                 evt = par.createEvent('Events');
@@ -134,10 +132,12 @@ var JEZ = JEZ || {},
               evt.data = args;
 
               if (elem.dispatchEvent) {
-                return elem.dispatchEvent(evt);
+                returned_data = elem.dispatchEvent(evt);
               } else if (elem.fireEvent) {
-                return elem.fireEvent('on' + event_name, evt);
+                returned_data = elem.fireEvent('on' + event_name, evt);
               }
+
+              return returned_data;
             },
             // attr
             'set': function(attr_name, attrs) {
@@ -184,10 +184,11 @@ var JEZ = JEZ || {},
             },
             'data': function(attr_name, attr_val) {
               var prefix = 'data-',
-                  full_attr_name = prefix + attr_name;
+                  full_attr_name = prefix + attr_name,
+                  returned_data = false;
 
               if (arguments.length === 2) { // get data
-                return this.get(full_attr_name);
+                returned_data = this.get(full_attr_name);
               } else if (arguments.length === 3) {
                 if (attr_name === '') { // remove data
                   this.del(full_attr_name);
@@ -195,10 +196,10 @@ var JEZ = JEZ || {},
                   this.set(full_attr_name, attr_val);
                 }
 
-                return true;
+                returned_data = true;
               }
 
-              return false;
+              return returned_data;
             },
             'create': function(params) {
               params = params || {};
@@ -398,9 +399,11 @@ var JEZ = JEZ || {},
     },
     'storage': {
       'prefix': 'jez_',
-      'supports': JEZ.support_local_storage,
+      'isSupport': function() {
+        return win.localStorage !== undef;
+      },
       'set': function(key, val) {
-        if (this.supports) {
+        if (this.isSupport) {
           win.localStorage.setItem(this.prefix + key, JSON.stringify(val));
         }
 
@@ -409,25 +412,25 @@ var JEZ = JEZ || {},
       'get': function(key, default_value) {
         var val;
 
-        if (this.supports) {
+        if (this.isSupport) {
           val = win.localStorage.getItem(this.prefix + key);
         }
 
-        if (!this.supports || !val) {
+        if (!this.isSupport || !val) {
           return default_value;
         }
 
         return JSON.parse(val);
       },
       'remove': function(key) {
-        if (this.supports) {
+        if (this.isSupport) {
           win.localStorage.removeItem(this.prefix + key);
         }
 
         return this;
       },
       'clear': function() {
-        if (this.supports) {
+        if (this.isSupport) {
           win.localStorage.clear();
         }
 
@@ -450,7 +453,6 @@ var JEZ = JEZ || {},
     },
     'vendors': ['', 'ms', 'moz', 'webkit', 'o'],
     'support_xhr': !(win.XMLHttpRequest.prototype.hasOwnProperty('withCredentials')) || !(win.XDomainRequest !== undef),
-    'support_local_storage': win.localStorage !== undef,
     'support_class_list': doc.documentElement.classList !== undef,
     'is_mobile': /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(win.navigator.userAgent),
     // "touchstart" event is faster than "click" on mobile devices
@@ -459,4 +461,4 @@ var JEZ = JEZ || {},
     },
     'hop': Object.prototype.hasOwnProperty
   };
-}(this));
+}(this, this.document, this.JEZ_locale || []));
